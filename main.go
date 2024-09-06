@@ -1,10 +1,9 @@
 package main
 
 import (
-	"github.com/zokhcat/bwdm/modules"
+	"github.com/zokhcat/bwdm/cmd"
 )
 
 func main() {
-	interfaceName := "wlo1"
-	modules.CapturePackets(interfaceName)
+	cmd.Execute()
 }
