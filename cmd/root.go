@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/google/gopacket/pcap"
 	"github.com/spf13/cobra"
@@ -44,8 +45,11 @@ func init() {
 }
 
 func runCapture(interfaceName string) {
-	fmt.Printf("Capturing packets on interface %s...\n", interfaceName)
-	modules.CapturePackets(interfaceName)
+	byteSliceChan := make(chan []uint64)
+	go modules.CapturePackets(interfaceName, byteSliceChan, 10*time.Second) // taking 10 as an example, going to set it as flag
+
+	bytesSlice := <-byteSliceChan
+	fmt.Println(bytesSlice)
 }
 
 func Execute() {
