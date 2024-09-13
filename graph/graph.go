@@ -1,55 +1,50 @@
 package graph
 
-// import (
-// 	"fmt"
-// 	"math"
+import (
+	"fmt"
+	"math"
 
-// 	"github.com/gdamore/tcell/v2"
-// 	"github.com/rivo/tview"
-// )
+	"github.com/gdamore/tcell/v2"
+	"github.com/rivo/tview"
+)
 
-// type GraphWidget struct {
-// 	*tview.Box
-// 	data     []float64
-// 	maxValue float64
-// }
+func DrawGraph(byteSlice []uint64) {
+	app := tview.NewApplication()
 
-// func NewGraphWidget() *GraphWidget {
-// 	return &GraphWidget{
-// 		Box:      tview.NewBox().SetTitle("Graph"),
-// 		data:     make([]float64, 10),
-// 		maxValue: 1,
-// 	}
-// }
+	graph := tview.NewBox().SetBorder(true).SetTitle("Packet Count Graph")
 
-// func (g *GraphWidget) DrawGraph(screen tcell.Screen) {
-// 	g.Box.DrawForSubclass(screen, g)
-// 	x, y, width, height := g.GetRect()
+	maxVal := uint64(0)
 
-// 	for i := 0; i < height; i++ {
-// 		screen.SetContent(x, y+i, '|', nil, tcell.StyleDefault)
-// 	}
+	for _, v := range byteSlice {
+		if v > maxVal {
+			maxVal = v
+		}
+	}
 
-// 	for i := 0; i < width; i++ {
-// 		screen.SetContent(x+i, y+height-1, '-', nil, tcell.StyleDefault)
-// 	}
+	draw := func(screen tcell.Screen, x, y, width, height int) (int, int, int, int) {
+		for i, val := range byteSlice {
+			scaledHeight := int(math.Round(float64(val) / float64(maxVal) * float64(height-2)))
 
-// 	for i, value := range g.data {
-// 		if value > 0 {
-// 			normalizedValue := int(math.Floor(value / g.maxValue * float64(height-2)))
-// 			screen.SetContent(x+i+1, y+height-2-normalizedValue, '•', nil, tcell.StyleDefault.Foreground(tcell.ColorGreen))
-// 		}
-// 	}
+			for j := 0; j < scaledHeight; j++ {
+				screen.SetContent(x+i*2, y+height-2-j, '█', nil, tcell.StyleDefault.Foreground(tcell.ColorGreen))
+			}
 
-// 	tview.Print(screen, "Bytes", x+1, y, 5, tview.AlignLeft, tcell.ColorWhite)
-// 	tview.Print(screen, fmt.Sprintf("%.0f", g.maxValue), x+1, y+1, 5, tview.AlignLeft, tcell.ColorWhite)
-// 	tview.Print(screen, "Time(s)", x+width-8, y+height-1, 8, tview.AlignRight, tcell.ColorWhite)
-// 	tview.Print(screen, "60", x+width-2, y+height-2, 2, tview.AlignRight, tcell.ColorWhite)
-// }
+			valStr := fmt.Sprintf("%d", val)
+			for k, ch := range valStr {
+				screen.SetContent(x+i*2+k, y+height-3-scaledHeight, rune(ch), nil, tcell.StyleDefault.Foreground(tcell.ColorYellow))
+			}
+		}
 
-// func (g *GraphWidget) AddPoint(value float64) {
-// 	g.data = append(g.data[1:], value)
-// 	if value > g.maxValue {
-// 		g.maxValue = value
-// 	}
-// }
+		for i := range byteSlice {
+			screen.SetContent(x+i*2, y+height-1, rune('0'+i), nil, tcell.StyleDefault)
+		}
+
+		return x, y, width, height
+	}
+
+	graph.SetDrawFunc(draw)
+
+	if err := app.SetRoot(graph, true).Run(); err != nil {
+		panic(err)
+	}
+}

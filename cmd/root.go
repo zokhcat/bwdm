@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/gopacket/pcap"
 	"github.com/spf13/cobra"
+	"github.com/zokhcat/bwdm/graph"
 	"github.com/zokhcat/bwdm/modules"
 )
 
@@ -48,8 +49,8 @@ func runCapture(interfaceName string) {
 	byteSliceChan := make(chan []uint64)
 	go modules.CapturePackets(interfaceName, byteSliceChan, 10*time.Second) // taking 10 as an example, going to set it as flag
 
-	bytesSlice := <-byteSliceChan
-	fmt.Println(bytesSlice)
+	byteSlice := <-byteSliceChan
+	graph.DrawGraph(byteSlice)
 }
 
 func Execute() {

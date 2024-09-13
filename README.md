@@ -8,7 +8,7 @@ TODO:
 graph TUI to-do:
 
 - [x] I get x values from capture function
-- pass it to the graph widget
-- draw x and y axes
-- draw data points
-- set the labels of the graph
+- [x] pass it to the graph widget
+- [x] draw x and y axes
+- [x] draw data points
+- [x] set the labels of the graph
