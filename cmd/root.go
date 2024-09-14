@@ -19,20 +19,11 @@ var rootCmd = &cobra.Command{
 
 var captureCmd = &cobra.Command{
 	Use:   "capture",
-	Short: "Start sniffing packets",
-	Long:  `Start capturing packets and calculate bandwidth usage.`,
+	Short: "Sniffing packets for 10 seconds",
+	Long:  `Sniffing packets for 10 seconds and present them in a graph visualizer`,
 	Run: func(cmd *cobra.Command, args []string) {
 		interfaceName, _ := cmd.Flags().GetString("interface")
 		if interfaceName == "" {
-			interfaces, err := pcap.FindAllDevs()
-			if err != nil {
-				fmt.Println("Error finding network interfaces:", err)
-				return
-			}
-			fmt.Println("Available interfaces:")
-			for _, iface := range interfaces {
-				fmt.Printf("- %s\n", iface.Name)
-			}
 			fmt.Println("Please specify an interface using the -i flag")
 			return
 		}
@@ -40,8 +31,27 @@ var captureCmd = &cobra.Command{
 	},
 }
 
+var listNetworkCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List all the network interfaces",
+	Long:  "Lists all the network interfaces present",
+	Run: func(cmd *cobra.Command, args []string) {
+		interfaces, err := pcap.FindAllDevs()
+		if err != nil {
+			fmt.Println("Error finding network interfaces:", err)
+		}
+
+		fmt.Println("Availble interfaces: ")
+		for _, iface := range interfaces {
+			fmt.Printf("- %s\n", iface.Name)
+		}
+		fmt.Println("Please specify an interface using the -i flag while using the capture command")
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(captureCmd)
+	rootCmd.AddCommand(listNetworkCmd)
 	captureCmd.Flags().StringP("interface", "i", "", "Network Interface to sniff packets from")
 }
 
