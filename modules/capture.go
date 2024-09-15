@@ -16,9 +16,6 @@ func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, capture
 	defer handle.Close()
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
-	// for packet := range packetSource.Packets() {
-	// 	fmt.Println(packet)
-	// }
 
 	var totalBytes uint64 = 0
 	var byteSlice []uint64
