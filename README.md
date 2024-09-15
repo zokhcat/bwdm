@@ -68,4 +68,11 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 ### Options:
 
 `capture`: Sniff packets on a specified network interface for 10 seconds and display network usage in a graphical interface
+
 `list`: List all available network interfaces
+
+## Future Todos:
+
+- [ ] Packet Filtering such for specific IP address
+- [ ] Log the packet capture into a file
+- [ ] Configurable capture duration(Maybe)
