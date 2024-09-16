@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -8,12 +9,20 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, captureDuration time.Duration) {
+func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, captureDuration time.Duration, ipAddress string) {
 	handle, err := pcap.OpenLive(interfaceName, 1600, true, pcap.BlockForever)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer handle.Close()
+
+	if ipAddress != "" {
+		filter := fmt.Sprintf("host %s", ipAddress)
+		if err := handle.SetBPFFilter(filter); err != nil {
+			log.Fatalf("Error setting BPF filter: %s", err)
+		}
+		fmt.Printf("BPF filter set: %s\n", filter)
+	}
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 

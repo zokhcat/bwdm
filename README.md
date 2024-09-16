@@ -13,7 +13,7 @@ _bwdm_ is a simple CLI- and TUI-based bandwidth monitoring tool that allows user
 ### Prerequisites
 
 - [go](https://go.dev/) (v1.18+)
-- [libcap](https://www.tcpdump.org/) , required for packet caputring
+- [libpcap](https://www.tcpdump.org/) , required for packet caputring
 - [git](https://git-scm.com/)
 
 ### Clone the repository
@@ -69,10 +69,14 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 
 `capture`: Sniff packets on a specified network interface for 10 seconds and display network usage in a graphical interface
 
+#### Flags:
+
+`p` or `ip`: to sniff packets from a specific IP address
+
 `list`: List all available network interfaces
 
 ## Future Todos:
 
-- [ ] Packet Filtering such for specific IP address
+- [x] Packet Filtering such for specific IP address
 - [ ] Log the packet capture into a file
 - [ ] Configurable capture duration(Maybe)
