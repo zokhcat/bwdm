@@ -75,7 +75,9 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 #### Flags:
 
 `interface` or `i`: sniff packets of a specific network interface
+
 `p` or `ip`: sniff packets from a specific IP address
+
 `file` or `f`: log the packet data into a file
 
 ## Future Todos:
