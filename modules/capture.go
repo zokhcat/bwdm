@@ -3,13 +3,20 @@ package modules
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 )
 
-func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, captureDuration time.Duration, ipAddress string) {
+func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, captureDuration time.Duration, ipAddress string, filename string) {
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("Failed to open file: %v", err)
+	}
+	defer file.Close()
+
 	handle, err := pcap.OpenLive(interfaceName, 1600, true, pcap.BlockForever)
 	if err != nil {
 		log.Fatal(err)
@@ -46,6 +53,11 @@ func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, capture
 	}()
 
 	for packet := range packetSource.Packets() {
+		_, err := file.WriteString(fmt.Sprintf("Packet: %v\n", packet.Data()))
+		if err != nil {
+			log.Printf("Failed to write packet data to file: %v", err)
+		}
+
 		totalBytes += uint64(len(packet.Data()))
 	}
 }

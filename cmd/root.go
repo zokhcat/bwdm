@@ -24,11 +24,12 @@ var captureCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		interfaceName, _ := cmd.Flags().GetString("interface")
 		ipAddress, _ := cmd.Flags().GetString("ipaddress")
+		file_name, _ := cmd.Flags().GetString("file")
 		if interfaceName == "" {
 			fmt.Println("Please specify an interface using the -i flag")
 			return
 		}
-		runCapture(interfaceName, ipAddress)
+		runCapture(interfaceName, ipAddress, file_name)
 	},
 }
 
@@ -55,11 +56,12 @@ func init() {
 	rootCmd.AddCommand(listNetworkCmd)
 	captureCmd.Flags().StringP("interface", "i", "", "Network Interface to sniff packets from")
 	captureCmd.Flags().StringP("ip", "p", "", "To sniff packets from a specific IP address")
+	captureCmd.Flags().StringP("file", "f", "", "To Write packet data in a file")
 }
 
-func runCapture(interfaceName string, ipAddress string) {
+func runCapture(interfaceName string, ipAddress string, file_name string) {
 	byteSliceChan := make(chan []uint64)
-	go modules.CapturePackets(interfaceName, byteSliceChan, 10*time.Second, ipAddress)
+	go modules.CapturePackets(interfaceName, byteSliceChan, 10*time.Second, ipAddress, file_name)
 
 	byteSlice := <-byteSliceChan
 	graph.DrawGraph(byteSlice)
