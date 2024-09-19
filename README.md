@@ -7,6 +7,7 @@ _bwdm_ is a simple CLI- and TUI-based bandwidth monitoring tool that allows user
 - _Packet Sniffing_: Capture and monitor network traffic from a specific interface.
 - _Graph Visualization_: Displays real-time network bandwidth in a graphical format for easy analysis.
 - _Network Interface Listing_: Lists all network interfaces for quick selection.
+- _Logging Packet data_: Logging Packet data in a file
 
 ## Installation
 
@@ -69,14 +70,16 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 
 `capture`: Sniff packets on a specified network interface for 10 seconds and display network usage in a graphical interface
 
+`list`: List all available network interfaces
+
 #### Flags:
 
-`p` or `ip`: to sniff packets from a specific IP address
-
-`list`: List all available network interfaces
+`interface` or `i`: sniff packets of a specific network interface
+`p` or `ip`: sniff packets from a specific IP address
+`file` or `f`: log the packet data into a file
 
 ## Future Todos:
 
 - [x] Packet Filtering such for specific IP address
-- [ ] Log the packet capture into a file
+- [x] Log the packet capture into a file
 - [ ] Configurable capture duration(Maybe)
