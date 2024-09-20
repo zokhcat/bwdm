@@ -10,7 +10,7 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, captureDuration time.Duration, ipAddress string, filename string) {
+func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, captureDuration time.Duration, ipAddress string, filename string, port string) {
 	file, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("Failed to open file: %v", err)
@@ -22,6 +22,14 @@ func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, capture
 		log.Fatal(err)
 	}
 	defer handle.Close()
+
+	if port != "" {
+		filter := fmt.Sprintf("port %s", port)
+		if err := handle.SetBPFFilter(filter); err != nil {
+			log.Fatalf("Error setting BPF filter: %s", err)
+		}
+		fmt.Printf("BPF filter set: %s\n", filter)
+	}
 
 	if ipAddress != "" {
 		filter := fmt.Sprintf("host %s", ipAddress)

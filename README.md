@@ -82,10 +82,12 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 
 `file` or `f`: log the packet data into a file
 
+`dst-port` or `p`: Sniff packets from a specific port
+
 ## Future Todos:
 
 - [x] Packet Filtering such for specific IP address
 - [x] Log the packet capture into a file
-- [ ] Advanced Filtering like port filtering and protocol filtering
+- [x] Advanced Filtering like port filtering and protocol filtering
 - [ ] Packet Inspection Mode
 - [ ] Configurable capture duration(Maybe)
