@@ -84,6 +84,8 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 
 `dst-port` or `p`: Sniff packets from a specific port
 
+`protocol` or `t`: Protocol filtering for packets
+
 ## Future Todos:
 
 - [x] Packet Filtering such for specific IP address
