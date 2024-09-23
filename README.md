@@ -86,10 +86,10 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 
 `protocol` or `t`: Protocol filtering for packets
 
-## Future Todos:
+## Future Todos: 
 
 - [x] Packet Filtering such for specific IP address
 - [x] Log the packet capture into a file
 - [x] Advanced Filtering like port filtering and protocol filtering
-- [ ] Packet Inspection Mode
+- [x] Packet Inspection Mode
 - [ ] Configurable capture duration(Maybe)
