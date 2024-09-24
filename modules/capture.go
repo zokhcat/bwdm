@@ -7,7 +7,9 @@ import (
 	"time"
 
 	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
+	"github.com/google/gopacket/pcapgo"
 )
 
 func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, captureDuration time.Duration, ipAddress string, filename string, port string, protocol string, inspect bool) {
@@ -16,6 +18,9 @@ func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, capture
 		log.Fatalf("Failed to open file: %v", err)
 	}
 	defer file.Close()
+
+	writer := pcapgo.NewWriter(file)
+	writer.WriteFileHeader(65536, layers.LinkTypeARCNetLinux)
 
 	handle, err := pcap.OpenLive(interfaceName, 1600, true, pcap.BlockForever)
 	if err != nil {
@@ -69,7 +74,7 @@ func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, capture
 	}()
 
 	for packet := range packetSource.Packets() {
-		_, err := file.WriteString(fmt.Sprintf("Packet: %v\n", packet.Data()))
+		err := writer.WritePacket(packet.Metadata().CaptureInfo, packet.Data())
 		if err != nil {
 			log.Printf("Failed to write packet data to file: %v", err)
 		}

@@ -80,16 +80,16 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 
 `p` or `ip`: sniff packets from a specific IP address
 
-`file` or `f`: log the packet data into a file
+`file` or `f`: log the packet data into a pcap file
 
 `dst-port` or `p`: Sniff packets from a specific port
 
 `protocol` or `t`: Protocol filtering for packets
 
-## Future Todos: 
+## Future Todos:
 
 - [x] Packet Filtering such for specific IP address
-- [x] Log the packet capture into a file
 - [x] Advanced Filtering like port filtering and protocol filtering
 - [x] Packet Inspection Mode
+- [x] Logging Packet Data into a pcap file
 - [ ] Configurable capture duration(Maybe)
