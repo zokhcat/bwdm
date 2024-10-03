@@ -92,4 +92,5 @@ This will sniff the packets on the `wlo1` interface for 10 seconds and visualize
 - [x] Advanced Filtering like port filtering and protocol filtering
 - [x] Packet Inspection Mode
 - [x] Logging Packet Data into a pcap file
+- [x] Show Realtime Geolocation IP
 - [ ] Configurable capture duration(Maybe)

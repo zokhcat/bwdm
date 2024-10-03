@@ -84,6 +84,14 @@ func CapturePackets(interfaceName string, byteSliceChan chan<- []uint64, capture
 			fmt.Printf("Data: %v\n", packet.Data())
 		}
 
+		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
+			ip, _ := ipLayer.(*layers.IPv4)
+			srcIP := ip.SrcIP.String()
+			dstIP := ip.DstIP.String()
+
+			fmt.Printf("Source IP: %s, Destination IP: %s\n", srcIP, dstIP)
+		}
+
 		totalBytes += uint64(len(packet.Data()))
 	}
 }
